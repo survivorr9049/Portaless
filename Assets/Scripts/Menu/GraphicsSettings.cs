@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GraphicsSettings : MonoBehaviour {
 	[SerializeField] private TMPro.TMP_Dropdown qualityDropdown;
 	[SerializeField] private TMPro.TMP_Dropdown resolutionDropdown;
-	[SerializeField] private bool windowed;
+	[SerializeField] private Toggle windowedToggle; 
 
-	void Start() {
+	private void Start() {
 		InitQualityDropdown(qualityDropdown);
 		InitResolutionDropdown(resolutionDropdown);
-		windowed = Screen.fullScreen;
+		InitWindowedToggle(windowedToggle);
 	}
 
 	private void InitQualityDropdown(TMPro.TMP_Dropdown dropdown) {
@@ -53,8 +54,18 @@ public class GraphicsSettings : MonoBehaviour {
 		// Handle value change
 		dropdown.onValueChanged.AddListener(delegate {
 			Resolution r = Screen.resolutions[dropdown.value];
-			Screen.SetResolution(r.width, r.height, windowed, r.refreshRate);
+			Screen.SetResolution(r.width, r.height, !windowedToggle.isOn, r.refreshRate);
 			Debug.Log($"Changed resolution to {ResolutionToString(r)}");
+		});
+	}
+
+	private void InitWindowedToggle(Toggle toggle) {
+		windowedToggle.isOn = !Screen.fullScreen;
+
+		// Handle value change
+		toggle.onValueChanged.AddListener(delegate {
+			Screen.fullScreenMode = windowedToggle.isOn ?
+				FullScreenMode.Windowed : FullScreenMode.FullScreenWindow;
 		});
 	}
 }
