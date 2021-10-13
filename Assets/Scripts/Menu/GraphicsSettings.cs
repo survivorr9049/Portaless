@@ -8,11 +8,13 @@ public class GraphicsSettings : MonoBehaviour {
 	[SerializeField] private TMPro.TMP_Dropdown qualityDropdown;
 	[SerializeField] private TMPro.TMP_Dropdown resolutionDropdown;
 	[SerializeField] private Toggle windowedToggle; 
+	[SerializeField] private Toggle vSyncToggle;
 
 	private void Start() {
 		InitQualityDropdown(qualityDropdown);
 		InitResolutionDropdown(resolutionDropdown);
 		InitWindowedToggle(windowedToggle);
+		InitVSyncToggle(vSyncToggle);
 	}
 
 	private void InitQualityDropdown(TMPro.TMP_Dropdown dropdown) {
@@ -60,12 +62,21 @@ public class GraphicsSettings : MonoBehaviour {
 	}
 
 	private void InitWindowedToggle(Toggle toggle) {
-		windowedToggle.isOn = !Screen.fullScreen;
+		toggle.isOn = !Screen.fullScreen;
 
 		// Handle value change
 		toggle.onValueChanged.AddListener(delegate {
-			Screen.fullScreenMode = windowedToggle.isOn ?
+			Screen.fullScreenMode = toggle.isOn ?
 				FullScreenMode.Windowed : FullScreenMode.FullScreenWindow;
+		});
+	}
+
+	private void InitVSyncToggle(Toggle toggle) {
+		vSyncToggle.isOn = QualitySettings.vSyncCount > 0;
+
+		// Handle value change
+		toggle.onValueChanged.AddListener(delegate {
+			QualitySettings.vSyncCount = toggle.isOn ? 1 : 0;
 		});
 	}
 }

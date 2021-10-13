@@ -230,6 +230,7 @@ MonoBehaviour:
   qualityDropdown: {fileID: 1850991227}
   resolutionDropdown: {fileID: 714408662}
   windowedToggle: {fileID: 2053464526}
+  vSyncToggle: {fileID: 1499761218}
 --- !u!1 &288277769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,6 +1324,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401421942}
   m_CullTransparentMesh: 1
+--- !u!114 &1499761218 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6120531051887459137, guid: a9fbbb9b823afac818f9490c39212607, type: 3}
+  m_PrefabInstance: {fileID: 6120531052228441629}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1503494676
 GameObject:
   m_ObjectHideFlags: 0
