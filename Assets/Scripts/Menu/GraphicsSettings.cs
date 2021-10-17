@@ -1,20 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GraphicsSettings : MonoBehaviour {
-	[SerializeField] private TMPro.TMP_Dropdown qualityDropdown;
-	[SerializeField] private TMPro.TMP_Dropdown resolutionDropdown;
-	[SerializeField] private Toggle windowedToggle; 
-	[SerializeField] private Toggle vSyncToggle;
+	[SerializeField] private TMPro.TMP_Dropdown _qualityDropdown;
+	[SerializeField] private TMPro.TMP_Dropdown _resolutionDropdown;
+	[SerializeField] private Toggle _windowedToggle; 
+	[SerializeField] private Toggle _vSyncToggle;
+	[SerializeField] private Toggle _fpsShowToggle;
 
 	private void Start() {
-		InitQualityDropdown(qualityDropdown);
-		InitResolutionDropdown(resolutionDropdown);
-		InitWindowedToggle(windowedToggle);
-		InitVSyncToggle(vSyncToggle);
+		InitQualityDropdown(_qualityDropdown);
+		InitResolutionDropdown(_resolutionDropdown);
+		InitWindowedToggle(_windowedToggle);
+		InitVSyncToggle(_vSyncToggle);
+		InitFPSShowToggle(_fpsShowToggle);
 	}
 
 	private void InitQualityDropdown(TMPro.TMP_Dropdown dropdown) {
@@ -56,7 +57,7 @@ public class GraphicsSettings : MonoBehaviour {
 		// Handle value change
 		dropdown.onValueChanged.AddListener(delegate {
 			Resolution r = Screen.resolutions[dropdown.value];
-			Screen.SetResolution(r.width, r.height, !windowedToggle.isOn, r.refreshRate);
+			Screen.SetResolution(r.width, r.height, !_windowedToggle.isOn, r.refreshRate);
 			Debug.Log($"Changed resolution to {ResolutionToString(r)}");
 		});
 	}
@@ -72,11 +73,24 @@ public class GraphicsSettings : MonoBehaviour {
 	}
 
 	private void InitVSyncToggle(Toggle toggle) {
-		vSyncToggle.isOn = QualitySettings.vSyncCount > 0;
+		_vSyncToggle.isOn = QualitySettings.vSyncCount > 0;
 
 		// Handle value change
 		toggle.onValueChanged.AddListener(delegate {
 			QualitySettings.vSyncCount = toggle.isOn ? 1 : 0;
+		});
+	}
+
+	private void InitFPSShowToggle(Toggle toggle) {
+		// This is awful way to do this but hey it works!
+		GameObject GetFPSCounterObject() =>
+			FindObjectOfType<FpsUI>().gameObject.transform.GetChild(0).gameObject;
+
+		_fpsShowToggle.isOn = GetFPSCounterObject().activeSelf;
+
+		// Handle value change
+		toggle.onValueChanged.AddListener(delegate {
+			GetFPSCounterObject().SetActive(_fpsShowToggle.isOn);
 		});
 	}
 }

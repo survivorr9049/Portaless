@@ -7,7 +7,14 @@ public class FpsUI : MonoBehaviour {
 	[SerializeField] private float _fpsRefreshRate = 1f;
 	private float _fpsCounter;
 	private float _timer;
- 
+
+	private void Awake() {
+		// We're allowing only one instance
+		DontDestroyOnLoad(this.gameObject);
+		if (FindObjectsOfType(GetType()).Length > 1)
+			Destroy(this.gameObject);
+	}
+
 	private void Update() {
 		if (Time.time > _timer) {
 			_fpsCounter = (int)(1f / Time.unscaledDeltaTime);
